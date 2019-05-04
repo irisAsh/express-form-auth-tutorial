@@ -1,0 +1,10 @@
+extends layout
+
+block jsModule
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha512.js')
+
+block content
+  h1= title
+
+  - var action = '/signin'
+  include form
