@@ -21,7 +21,7 @@ script.
     try {
       var passwordSelctor = document.getElementById('password');
       var shaObj = new jsSHA("SHA-512", "TEXT")
-      shaObj.update(passwordSelctor)
+      shaObj.update(passwordSelctor.value)
       var hash = shaObj.getHash("HEX")
       passwordSelctor.value = hash
       return true;

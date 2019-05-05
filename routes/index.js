@@ -20,7 +20,7 @@ router.post('/signin', function(req, res, next) {
   var hash = bcrypt.hashSync(password, salt);
   User.create({
     username,
-    password
+    password: hash
   })
   .then(function(result) {
     // user_idをセッションに詰める
@@ -37,5 +37,34 @@ router.post('/signin', function(req, res, next) {
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Login' });
 });
+
+router.post('/login', function(req, res, next) {
+  var { username, password } = req.body;
+  User.findOne({ username })
+  .then(function(result) {
+    if (!result) {
+      throw new Error('Userが見つかりません');
+    }
+    if (bcrypt.compareSync(password, result.password)) {
+      // user_idをセッションに詰める
+      var session = req.session;
+      session.userId = result._id;
+      res.redirect('/users');
+    } else {
+      res.redirect('/login');
+    }
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
+  });
+});
+
+router.post('/logout', function(req, res, next) {
+  var session = req.session;
+  session.userId = null;
+  res.redirect('/');
+});
+
 
 module.exports = router;
