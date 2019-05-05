@@ -1,8 +1,9 @@
-extend layout
+extend ../layout
 
 block content
   h1= title
 
-  p
-    usernane:
-    #{user.username}
+  p.
+    username: #{user.username}
+
+  a(href='/logout') logout

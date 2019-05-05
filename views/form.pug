@@ -9,9 +9,23 @@ form(method='POST' action=action)
   div
     label(for='password') password：
     input#password(
-      type='text'
+      type='password'
       name='password'
       required='true'
     )
   div
-    input(type='submit')
+    input(type='submit' value='submit' onClick='return getHashAndSubmit();')
+
+script.
+  var getHashAndSubmit = function() {
+    try {
+      var passwordSelctor = document.getElementById('password');
+      var shaObj = new jsSHA("SHA-512", "TEXT")
+      shaObj.update(passwordSelctor)
+      var hash = shaObj.getHash("HEX")
+      passwordSelctor.value = hash
+      return true;
+    } catch (_e) {
+      return false;
+    }
+  }
